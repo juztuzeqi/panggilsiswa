@@ -3,168 +3,180 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#10b981">
-  <title>Cari Guru Bimbel</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" type="image/png" href="icon-192.png">
+  <meta name="theme-color" content="#1d4ed8">
+  <title>Cek Guru Pengampu - Bimbel</title>
+  
+  <!-- PWA Manifest & Ikon -->
+  <link rel="manifest" href='data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Cek%20Guru%20Bimbel%22%2C%22short_name%22%3A%22CekGuru%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23ffffff%22%2C%22theme_color%22%3A%22%231d4ed8%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fapi.iconify.design%2Ffluent-emoji-flat%3Aschool.svg%22%2C%22sizes%22%3A%22192x192%20512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D'>
+
   <style>
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { margin: 0; background: #f3f4f6; color: #1f2937; padding: 16px; display: flex; justify-content: center; }
+    body { margin: 0; background: #eff6ff; color: #111; padding: 16px; display: flex; justify-content: center; }
     .container { width: 100%; max-width: 480px; }
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    h1 { font-size: 1.25rem; margin: 0; color: #065f46; }
-    .btn-manage { background: #e5e7eb; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
-    .search-box { width: 100%; padding: 14px 16px; font-size: 1.1rem; border: 2px solid #10b981; border-radius: 12px; outline: none; margin-bottom: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
-    .card { background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 5px solid #10b981; }
-    .student-name { font-size: 1.2rem; font-weight: 700; color: #111827; margin-bottom: 4px; }
-    .teacher-info { font-size: 0.95rem; color: #4b5563; margin-bottom: 12px; }
-    .badge { background: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 6px; font-weight: 600; font-size: 0.85rem; }
-    .btn-wa { display: block; width: 100%; text-align: center; background: #25D366; color: white; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 1rem; }
-    .btn-wa:active { background: #1ebe5d; }
-    .empty { text-align: center; color: #6b7280; margin-top: 32px; }
+    header { background: #1d4ed8; color: white; padding: 16px; border-radius: 12px 12px 0 0; text-align: center; }
+    h1 { font-size: 1.2rem; margin: 0; }
+    .card-body { background: white; padding: 16px; border-radius: 0 0 12px 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
     
-    /* Modal / Panel Kelola Data */
-    #managePanel { display: none; background: white; padding: 16px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 16px; }
-    .form-group { margin-bottom: 10px; }
-    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
-    .form-group input, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem; }
-    .btn-save { background: #10b981; color: white; border: none; padding: 10px 14px; border-radius: 8px; font-weight: 600; width: 100%; cursor: pointer; margin-top: 6px; }
-    .teacher-list-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f3f4f6; font-size: 0.9rem; }
-    .btn-del { background: #fee2e2; color: #dc2626; border: none; padding: 4px 8px; border-radius: 6px; cursor: pointer; }
+    .section { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+    .section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    
+    label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: #555; }
+    input[type="text"] { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
+    
+    .btn { display: block; width: 100%; text-align: center; background: #25D366; color: white; text-decoration: none; padding: 14px; border-radius: 8px; font-weight: 700; font-size: 1rem; border: none; cursor: pointer; margin-top: 10px; }
+    .btn:active { background: #1ebe5d; }
+    .btn-secondary { background: #1d4ed8; }
+    
+    .result-box { margin-top: 15px; padding: 16px; background: #eff6ff; border-left: 5px solid #1d4ed8; border-radius: 8px; display: none; }
+    .student-name { font-size: 1.3rem; font-weight: 700; color: #1e40af; margin-bottom: 4px; }
+    .teacher-info { font-size: 1rem; color: #374151; margin-bottom: 12px; font-weight: 600; }
+    
+    .status-sync { font-size: 0.75rem; color: #1e40af; background: #dbeafe; padding: 4px 8px; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
+    
+    .log-list { margin-top: 15px; font-size: 0.85rem; color: #666; max-height: 120px; overflow-y: auto; }
+    .log-item { padding: 4px 0; border-bottom: 1px dashed #eee; }
   </style>
-  <!-- Konfigurasi PWA Manifest & Ikon SVG Otomatis -->
-  <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Bimbel%20App%22%2C%22short_name%22%3A%22Bimbel%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23ffffff%22%2C%22theme_color%22%3A%22%23075e54%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2svg%2Bxml%3Butf5%2C%253Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20512%20512%27%3E%3Crect%20width%3D%27512%27%20height%3D%27512%27%20rx%3D%27100%27%20fill%3D%27%2325D366%27%2F%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2755%25%27%20font-size%3D%27260%27%20text-anchor%3D%27middle%27%20dominant-baseline%3D%27central%27%3E%F0%9F%93%B2%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22192x192%20512x512%22%2C%22type%22%3A%22image%2svg%2Bxml%22%7D%5D%7D">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>🔍 Cari Guru Bimbel</h1>
-      <button class="btn-manage" onclick="toggleManage()">⚙️ Data Guru</button>
+      <h1>👨‍🏫 Cek Guru Pengampu Siswa</h1>
     </header>
+    
+    <div class="card-body">
+      <!-- Status Sinkronisasi GitHub -->
+      <div class="section" style="text-align: center;">
+        <span id="syncStatus" class="status-sync">⏳ Mengambil data dari GitHub...</span>
+      </div>
 
-    <!-- Panel Tambah/Edit Data -->
-    <div id="managePanel">
-      <h3 style="margin-top:0; font-size:1rem;">Tambah Guru & Daftar Murid</h3>
-      <div class="form-group">
-        <label>Nama Guru & Ruangan</label>
-        <input type="text" id="inpGuru" placeholder="Contoh: Ms Rani (Ruang 2)">
+      <!-- Input Cari Nama Siswa -->
+      <div class="section">
+        <label>Cari Nama Siswa (Contoh: Xander / Andi)</label>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="inputScan" placeholder="Ketik nama siswa..." onkeypress="cekEnter(event)">
+          <button class="btn btn-secondary" style="margin-top:0; width: 120px;" onclick="prosesCari()">Cari</button>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Nomor WhatsApp (awalan 62)</label>
-        <input type="tel" id="inpWa" placeholder="Contoh: 6281234567890">
+
+      <!-- Hasil Pencarian Guru -->
+      <div id="resultBox" class="result-box">
+        <div class="student-name" id="resNama">-</div>
+        <div class="teacher-info" id="resInfo">-</div>
+        <a id="btnWa" href="#" target="_blank" class="btn">📲 WhatsApp Guru Pengampu</a>
       </div>
-      <div class="form-group">
-        <label>Daftar Murid (pisahkan dengan koma)</label>
-        <textarea id="inpMurid" rows="2" placeholder="Contoh: Nina, Budi, Clara, Dimas"></textarea>
+
+      <!-- Riwayat Pengecekan Hari Ini -->
+      <div class="section" style="margin-top: 20px;">
+        <label>Riwayat Pengecekan Hari Ini</label>
+        <div id="logContainer" class="log-list">Belum ada pencarian hari ini.</div>
       </div>
-      <button class="btn-save" onclick="tambahData()">+ Simpan Data</button>
-      
-      <hr style="margin: 16px 0; border: 0; border-top: 1px solid #e5e7eb;">
-      <div id="daftarGuruList"></div>
     </div>
-
-    <!-- Kotak Pencarian Utama -->
-    <input type="text" id="searchInput" class="search-box" placeholder="Ketik nama murid (misal: Nina)..." oninput="renderHasil()" autofocus>
-
-    <div id="hasilContainer"></div>
   </div>
 
   <script>
-    // Data awal bawaan
-    const defaultData = [
-      { id: 1, guru: "Ms Rani (Ruang 2)", wa: "6281234567890", murid: ["Nina", "Budi", "Clara"] },
-      { id: 2, guru: "Mr Andi (Ruang 1)", wa: "6289876543210", murid: ["Dimas", "Siti", "Kevin"] }
-    ];
+    let dbSiswa = [];
 
-    let dataBimbel = JSON.parse(localStorage.getItem('dataBimbel')) || defaultData;
-
-    function simpanLocal() {
-      localStorage.setItem('dataBimbel', JSON.stringify(dataBimbel));
-    }
-
-    function toggleManage() {
-      const panel = document.getElementById('managePanel');
-      panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-      renderDaftarGuru();
-    }
-
-    function tambahData() {
-      const guru = document.getElementById('inpGuru').value.trim();
-      let wa = document.getElementById('inpWa').value.trim().replace(/[^0-9]/g, '');
-      if (wa.startsWith('0')) wa = '62' + wa.slice(1);
-      const muridRaw = document.getElementById('inpMurid').value;
-      const murid = muridRaw.split(',').map(m => m.trim()).filter(m => m !== "");
-
-      if (!guru || !wa || murid.length === 0) {
-        alert("Mohon lengkapi nama guru, nomor WA, dan minimal 1 nama murid.");
-        return;
-      }
-
-      dataBimbel.push({ id: Date.now(), guru, wa, murid });
-      simpanLocal();
-      
-      document.getElementById('inpGuru').value = '';
-      document.getElementById('inpWa').value = '';
-      document.getElementById('inpMurid').value = '';
-      renderDaftarGuru();
-      renderHasil();
-    }
-
-    function hapusData(id) {
-      dataBimbel = dataBimbel.filter(item => item.id !== id);
-      simpanLocal();
-      renderDaftarGuru();
-      renderHasil();
-    }
-
-    function renderDaftarGuru() {
-      const list = document.getElementById('daftarGuruList');
-      list.innerHTML = dataBimbel.map(item => `
-        <div class="teacher-list-item">
-          <div>
-            <strong>${item.guru}</strong><br>
-            <small style="color:#6b7280">${item.murid.join(', ')}</small>
-          </div>
-          <button class="btn-del" onclick="hapusData(${item.id})">Hapus</button>
-        </div>
-      `).join('');
-    }
-
-    function renderHasil() {
-      const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
-      const container = document.getElementById('hasilContainer');
-      
-      if (!keyword) {
-        container.innerHTML = '<div class="empty">Ketik nama murid di atas untuk langsung menghubungi gurunya.</div>';
-        return;
-      }
-
-      let hasilHTML = '';
-      dataBimbel.forEach(item => {
-        item.murid.forEach(namaMurid => {
-          if (namaMurid.toLowerCase().includes(keyword)) {
-            const pesanOtomatis = encodeURIComponent(`Halo ${item.guru.split('(')[0].trim()}, orang tua dari ${namaMurid} sudah datang.`);
-            hasilHTML += `
-              <div class="card">
-                <div class="student-name">${namaMurid}</div>
-                <div class="teacher-info">Guru: <span class="badge">${item.guru}</span></div>
-                <a href="https://wa.me/${item.wa}?text=${pesanOtomatis}" target="_blank" class="btn-wa">
-                  📞 Hubungi ${item.guru.split('(')[0].trim()} di WhatsApp
-                </a>
-              </div>
-            `;
-          }
+    // Tarik otomatis data.csv dari GitHub
+    window.onload = function() {
+      fetch('data.csv')
+        .then(response => {
+          if (!response.ok) throw new Error("File data.csv tidak ditemukan di GitHub!");
+          return response.text();
+        })
+        .then(text => {
+          parseCSV(text);
+          document.getElementById('syncStatus').innerText = `✅ Terhubung ke GitHub (${dbSiswa.length} data siswa dimuat)`;
+        })
+        .catch(error => {
+          console.error(error);
+          document.getElementById('syncStatus').style.background = "#fee2e2";
+          document.getElementById('syncStatus').style.color = "#dc2626";
+          document.getElementById('syncStatus').innerText = "⚠️ Gagal sinkron ke GitHub. Menggunakan data cadangan.";
+          
+          // Data cadangan sementara
+          dbSiswa = [
+            { nama: "Jessica .P", guru: "Mr. Mudra", wa: "6281234567890" },
+            { nama: "Mahesyah Abdi Utama", guru: "Mr. Mudra", wa: "6289876543210" },
+            { nama: "Xander", guru: "Ms. Rahel", wa: "6281398765432" },
+            { nama: "Andi Saputra Sidabutar", guru: "Mr. Mudra", wa: "6281122334477" }
+          ];
         });
-      });
+    };
 
-      container.innerHTML = hasilHTML || '<div class="empty">Nama murid tidak ditemukan.</div>';
+    function parseCSV(text) {
+      const rows = text.split('\n');
+      let dataBaru = [];
+
+      for (let i = 0; i < rows.length; i++) {
+        let row = rows[i].trim();
+        if (row) {
+          let cols = row.includes(';') ? row.split(';') : row.split(',');
+          if (cols.length >= 3) {
+            let col1 = cols[0].trim().replace(/['"]+/g, '');
+            if (col1.toLowerCase() === 'nama') continue; // Lewati header
+
+            let nama = cols[0].trim().replace(/['"]+/g, '');
+            let guru = cols[1].trim().replace(/['"]+/g, '');
+            let wa = cols[2].trim().replace(/[^0-9]/g, '');
+
+            if (wa.startsWith('0')) wa = '62' + wa.slice(1);
+            if (nama && guru) {
+              dataBaru.push({ nama, guru, wa });
+            }
+          }
+        }
+      }
+      if (dataBaru.length > 0) dbSiswa = dataBaru;
     }
 
-    renderHasil();
+    function cekEnter(e) {
+      if (e.key === 'Enter') {
+        prosesCari();
+      }
+    }
 
-    // Registrasi Service Worker untuk PWA
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js');
+    function prosesCari() {
+      const keyword = document.getElementById('inputScan').value.trim().toLowerCase();
+      if (!keyword) {
+        alert("Ketik nama siswa terlebih dahulu!");
+        return;
+      }
+
+      const siswaDitemukan = dbSiswa.find(s => s.nama.toLowerCase() === keyword || s.nama.toLowerCase().includes(keyword));
+      const resBox = document.getElementById('resultBox');
+      
+      if (siswaDitemukan) {
+        document.getElementById('resNama').innerText = "👤 " + siswaDitemukan.nama;
+        document.getElementById('resInfo').innerHTML = `Guru Pengampu: <strong style="color: #1d4ed8;">${siswaDitemukan.guru}</strong>`;
+        
+        const teksPesan = `Halo ${siswaDitemukan.guru}, penjemput untuk *${siswaDitemukan.nama}* sudah tiba di depan. Mohon disiapkan ya, terima kasih!`;
+        const urlWa = `https://wa.me/${siswaDitemukan.wa}?text=${encodeURIComponent(teksPesan)}`;
+        
+        document.getElementById('btnWa').setAttribute('href', urlWa);
+        resBox.style.display = 'block';
+
+        tambahLog(siswaDitemukan.nama, siswaDitemukan.guru);
+      } else {
+        resBox.style.display = 'none';
+        alert(`Siswa dengan nama "${keyword}" tidak ditemukan di database.`);
+      }
+
+      document.getElementById('inputScan').value = '';
+      document.getElementById('inputScan'].focus();
+    }
+
+    function tambahLog(namaSiswa, namaGuru) {
+      const logContainer = document.getElementById('logContainer');
+      const waktu = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+      
+      if (logContainer.innerText.includes("Belum ada")) {
+        logContainer.innerHTML = "";
+      }
+      
+      const item = document.createElement('div');
+      item.className = 'log-item';
+      item.innerText = `[${waktu}] Cek ${namaSiswa} ➔ Guru: ${namaGuru}`;
+      logContainer.prepend(item);
     }
   </script>
 </body>
